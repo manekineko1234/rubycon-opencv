@@ -88,10 +88,16 @@ def marker_height(corners)
   return total_height
 end
 
-
+# ジェンガを積んだときの高さ
 def height(low,high)
   h = (high - low).abs
   return h
+end
+
+# ジェンガの段数
+def jenga_step(height,marker_height)
+  a = (height / marker_height).abs
+  return a
 end
   
 
@@ -99,7 +105,7 @@ my_dict = {}
 
 
 # 100回ループ
-100.times do
+1000.times do
   markers = ArucoDetector.get() #[[id,x1,y1...]]
   new_dict = {}
 
@@ -175,8 +181,10 @@ my_dict = {}
       end
 
     end
-      if height(low,high) > 100
+      if jenga_step(higeht,marker_height) > 12
         play_alert_sound(chunk)
+      elsif jenga_step(height,marker_height) > 14
+        play_alert_sound(chunk1)
       end
   end
 end
