@@ -8,8 +8,7 @@ windows 11
 
 # Ruby install
 
-* Rubyinstallerで最新VerのRubyを入れる（devkit付き)
-* [Rubyinstaller](https://rubyinstaller.org/downloads/)(最新Verを入れる)
+* [Rubyinstaller](https://rubyinstaller.org/downloads/)(最新Verを入れる&Devkit付き)
 * Only User を選択してNext
 * MSY32のチェックボックスをクリック　→　install
 * 最後のチェックボックスをクリック
