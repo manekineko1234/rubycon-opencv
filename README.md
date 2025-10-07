@@ -47,7 +47,7 @@ ruby-sdl2のインストール
 
     gem install ruby-sdl2
 
-#実行
+# 実行
 
 ルートに戻って
 
