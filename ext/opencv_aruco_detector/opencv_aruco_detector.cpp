@@ -9,7 +9,7 @@
 
     static VALUE detect_open(VALUE self)
     {
-        inputVideo.open(0);
+        inputVideo.open(1);
         if (!inputVideo.isOpened())
         {
             rb_raise(rb_eRuntimeError, "カメラの起動に失敗しました。");
