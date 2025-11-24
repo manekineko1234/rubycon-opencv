@@ -52,6 +52,21 @@ def play_alert_sound(id)
   when 2
     chunk   = ($long_sound[2] rescue nil) || ($short_sound[2] rescue nil)
     channel = 3
+  when 3
+    chunk   = ($long_sound[3] rescue nil) || ($short_sound[3] rescue nil)
+    channel = 4
+  when 4
+    chunk   = ($long_sound[4] rescue nil) || ($short_sound[4] rescue nil)
+    channel = 5
+  when 5 
+    chunk   = ($long_sound[5] rescue nil) || ($short_sound[5] rescue nil)
+    channel = 6
+  when 6
+    chunk   = ($long_sound[6] rescue nil) || ($short_sound[6] rescue nil)
+    channel = 7
+  when 7
+    chunk   = ($long_sound[7] rescue nil) || ($short_sound[7] rescue nil)
+    channel = 8
   else
     chunk   = ($long_sound[id] rescue nil) || ($short_sound[id] rescue nil) || $short_sound.sample
     channel = id.to_i
@@ -73,7 +88,7 @@ def play_alert_sound(id)
   end
 end
 
-sound = SDL2::Mixer::Chunk.load('bgm.wav') rescue nil
+sound = SDL2::Mixer::Chunk.load('bgm1.mp3') rescue nil
 
 gv_sound = SDL2::Mixer::Chunk.load('gameover1.wav') rescue nil
 
