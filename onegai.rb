@@ -132,10 +132,10 @@ def jenga_step(height, marker_height)
   (height / marker_height).round
 end
 
-  
+
 
 my_dict = {}
-
+prev_step = 0
 
 # 1000回ループ
 1000.times do
@@ -157,48 +157,49 @@ my_dict = {}
     # cをnew_dict[id]についた
     new_dict[id] << c
     puts "ID: #{id} corners: #{corners.inspect} center: #{c.inspect}"
-    # mh = marker_height(corners)
-    # puts "marker height: #{mh}"
   end
 
   count = 0
-    # 前回のmy_dictと比較
-  my_dict.each_key do |id|
-    # new_dictにidがないなら次のループへスキップ
-    next unless new_dict.key?(id)
-
-    old_markers = my_dict[id]
-    new_markers = new_dict[id]
-
-    # 配列の長さを比較し、短い方を short、長い方を long
-    if old_markers.length < new_markers.length
-      short = old_markers
-      long  = new_markers
-    else
-      short = new_markers
-      long  = old_markers
-    end
-
-    min = 100000000000
-    short.each do |mbase|
-      long.each do |mdis|
-        dis = distance(mbase,mdis)
-        if dis < min
-          min = dis
-        end
+  
+  # ジェンガの段数を計算
+  low = -1
+  high = 100000
+  avg_marker_height = 0
+  marker_count = 0
+  
+  new_dict.each do |key, value|
+    value.each do |c|
+      c_y = c[1]
+      if low < c_y
+        low = c_y
+      end
+      if high > c_y 
+        high = c_y
       end
     end
-
-    # puts min
-    if min > 10
-      play_alert_sound(id) # IDにしておけばIDとの紐づけを行うことで、IDごとに音を鳴らすことができる
-      count += 1
-    end
-
-    # countの数に応じて、BGMやゲームオーバー音を鳴らす
+  end
+  
+  # マーカーの高さの平均を計算
+  markers.each do |marker|
+    corners = marker[1..8]
+    mh = marker_height(corners)
+    avg_marker_height += mh
+    marker_count += 1
+  end
+  
+  avg_marker_height = avg_marker_height / marker_count if marker_count > 0
+  
+  total_height = (low - high).abs
+  current_step = jenga_step(total_height, avg_marker_height)
+  
+  puts "Total Height: #{total_height}, Avg Marker Height: #{avg_marker_height}, Current Step: #{current_step}, Prev Step: #{prev_step}"
+  
+  # 段数が減ったら、ジェンガが崩れたと判定
+  if prev_step > 0 && current_step < prev_step
+    count = 2  # ジェンガが崩れた
   end
 
-    puts ("count: #{count}")
+  puts ("count: #{count}")
   if count >= 1
     play_BGM(sound)
     SDL2::Mixer::Channels.set_volume(100, 30) # BGMの音量を下げる
@@ -210,6 +211,12 @@ my_dict = {}
     loop do
     end
   end
+
+  my_dict = new_dict
+  prev_step = current_step
+  ArucoDetector.wait(200)
+end
+
   # # ジェンガの高さを求める
   # low = -1
   # high = 100000
@@ -237,9 +244,7 @@ my_dict = {}
     #     play_BGM(sound)
     #   end
 
-  my_dict = new_dict
-  ArucoDetector.wait(200)
-end
+
 
 
 $long_sound.each do |chunk|
