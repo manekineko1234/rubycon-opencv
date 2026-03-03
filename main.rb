@@ -126,6 +126,12 @@ def marker_height(corners)
   return total_height
 end
 
+# ジェンガの段数を求める関数
+def jenga_step(height, marker_height)
+  return 0 if marker_height == 0
+  (height / marker_height).round
+end
+
   
 
 my_dict = {}
