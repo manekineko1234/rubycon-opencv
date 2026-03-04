@@ -136,6 +136,7 @@ end
 
 my_dict = {}
 prev_step = 0
+collapse_step_drop = 1
 
 # 1000回ループ
 1000.times do
@@ -159,8 +160,6 @@ prev_step = 0
     puts "ID: #{id} corners: #{corners.inspect} center: #{c.inspect}"
   end
 
-  count = 0
-  
   # ジェンガの段数を計算
   low = -1
   high = 100000
@@ -191,20 +190,16 @@ prev_step = 0
   
   total_height = (low - high).abs
   current_step = jenga_step(total_height, avg_marker_height)
+  step_drop = prev_step - current_step
+  collapsed = prev_step > 0 && step_drop >= collapse_step_drop
   
-  puts "Total Height: #{total_height}, Avg Marker Height: #{avg_marker_height}, Current Step: #{current_step}, Prev Step: #{prev_step}"
-  
-  # 段数が減ったら、ジェンガが崩れたと判定
-  if prev_step > 0 && current_step < prev_step
-    count = 2  # ジェンガが崩れた
-  end
+  puts "Total Height: #{total_height}, Avg Marker Height: #{avg_marker_height}, Current Step: #{current_step}, Prev Step: #{prev_step}, Step Drop: #{step_drop}, Collapsed: #{collapsed}"
 
-  puts ("count: #{count}")
-  if count >= 1
+  if current_step > 0
     play_BGM(sound)
     SDL2::Mixer::Channels.set_volume(100, 30) # BGMの音量を下げる
   end
-  if count >= 2
+  if collapsed
     play_sound_gameover(gv_sound) # ジェンガが崩れたときに、gameover音を鳴らす
     SDL2::Mixer::Channels.set_volume(50, 200) # gameover音の音量を上げる
 
